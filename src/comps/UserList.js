@@ -1,14 +1,28 @@
 import { Button, Space, Table } from "antd";
 
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { del } from "../store/slices/user-silce";
-
+import { del, getUsers } from "../store/slices/user-silce";
+import { PAGE_SIZE } from "../tools/constants";
 function UserList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.user.users);
+  const total = useSelector((state) => state.user.total);
+  const [loading, setLoading] = useState(false)
+  const changePage = (current) => {
+    setLoading(true)
+    dispatch(getUsers(current)).then(()=>{
+      setLoading(false)
+    })
+  };
+  useEffect(() => {
+    setLoading(true)
+    dispatch(getUsers(1, PAGE_SIZE)).then(()=>{
+      setLoading(false)
+    })
+  }, []);
   const columns = [
     {
       title: "姓名",
@@ -36,7 +50,7 @@ function UserList() {
             >
               删除
             </Button>
-            <Button type="link" onClick={() => navigate(`/users/${record.id}`)}>
+            <Button type="link" onClick={() => navigate(`/users/${record._id}`)}>
               查看详情
             </Button>
           </Space>
@@ -44,7 +58,16 @@ function UserList() {
       },
     },
   ];
-
+  const paginationProps = {
+     showSizeChanger: true,
+     showQuickJumper: true,
+    showTotal: () => `共${total}条`,
+    pageSize: PAGE_SIZE,
+    // current: current,
+    total: total,
+    showSizeChanger: true,
+    onChange: (current) => changePage(current),
+  };
   return (
     <>
       <Button
@@ -57,7 +80,9 @@ function UserList() {
       <Table
         dataSource={users}
         columns={columns}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record._id}
+        pagination={paginationProps}
+        loading={loading}
       />
     </>
   );

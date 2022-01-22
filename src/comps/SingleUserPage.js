@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 import { Card, Skeleton } from "antd";
 function SingleUserPage() {
   const { userId } = useParams();
-  const [loading, setloading] = useState(true);
+  const [loading, setloading] = useState(false);
   const user = useSelector((state) =>
-    state.user.users.find((item) => item.id === userId)
+    state.user.users.find((item) =>item. _id === userId)
   );
-
+console.log('user:',user.avatar)
   return (
     <div style={{ background: "#ececec", height: "100%" }}>
       <Card
@@ -19,7 +19,7 @@ function SingleUserPage() {
           <img
             alt="example"
             onLoad={() => {
-              console.log("loading completed...");
+              
               setloading(false);
             }}
            
@@ -31,7 +31,7 @@ function SingleUserPage() {
         <Skeleton loading={loading} avatar active>
           <Card.Meta
             title={user.username}
-            description={user.password}
+            description={user.age}
             loading={loading.toString()}
           >
             {user.username}
