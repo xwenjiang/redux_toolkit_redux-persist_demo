@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import ajax from "../../tools/ajax";
 import { PAGE_SIZE } from "../../tools/constants";
 const initState = {
   users: [],
@@ -8,7 +8,7 @@ const initState = {
   current: 0,
 };
 export const getUsers = createAsyncThunk("users/getusers", async (props) => {
-  const response = await axios({
+  const response = await ajax({
     method: "GET",
     url: `http://localhost:4000/users/getuser`,
     params: {
@@ -18,13 +18,27 @@ export const getUsers = createAsyncThunk("users/getusers", async (props) => {
   });
   return response.data;
 });
+export const editUser = createAsyncThunk("users/edituser", async (user) => {
+  const response = await ajax.post(
+    `http://localhost:4000/users/edituser`,
+    user
+  );
+  console.log(response.data);
+  return response.data;
+});
+export const deleteUser = createAsyncThunk("users/deleteuser", async (_id) => {
+  const response = await ajax.post(`http://localhost:4000/users/deleteuser`, {
+    _id,
+  });
+  console.log(response.data);
+  return response.data;
+});
 
 const userSilce = createSlice({
   name: "user",
   initialState: initState,
   reducers: {
     add: (state, action) => {
-      const { username, password, avatar } = action.payload;
       state.users.push({ ...action.payload });
     },
     edit: (state, action) => {
@@ -47,9 +61,27 @@ const userSilce = createSlice({
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(getUsers.fulfilled, (state, action) => {
       // Add user to the state array
-      const { result, message, total, userList } = action.payload;
+      const { total, userList } = action.payload;
       state.users = userList;
       state.total = total;
+    });
+    builder.addCase(editUser.fulfilled, (state, action) => {
+      // Add user to the state array
+      const { data } = action.payload;
+      for (let index = 0; index < state.users.length; index++) {
+        const element = state.users[index];
+        if (element._id === data._id) {
+          console.log("find it !");
+          state.users[index].username = data.username;
+          state.users[index].age = data.age;
+          state.users[index].avatar = data.avatar;
+        }
+      }
+    });
+    builder.addCase(deleteUser.fulfilled, (state, action) => {
+      const { _id } = action.payload.data;
+
+      state.users = state.users.filter((item) => item._id !== _id);
     });
   },
 });

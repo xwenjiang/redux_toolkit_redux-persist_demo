@@ -6,9 +6,9 @@ function SingleUserPage() {
   const { userId } = useParams();
   const [loading, setloading] = useState(false);
   const user = useSelector((state) =>
-    state.user.users.find((item) =>item. _id === userId)
+    state.user.users.find((item) => item._id === userId)
   );
-console.log('user:',user.avatar)
+
   return (
     <div style={{ background: "#ececec", height: "100%" }}>
       <Card
@@ -19,10 +19,8 @@ console.log('user:',user.avatar)
           <img
             alt="example"
             onLoad={() => {
-              
               setloading(false);
             }}
-           
             src={user.avatar}
             loading="lazy"
           />

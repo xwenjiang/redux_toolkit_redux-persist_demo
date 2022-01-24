@@ -1,28 +1,28 @@
 import { Button, Space, Table } from "antd";
 
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { del, getUsers } from "../store/slices/user-silce";
+import { deleteUser, getUsers } from "../store/slices/user-silce";
 import { PAGE_SIZE } from "../tools/constants";
 function UserList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector((state) => state.user.users);
   const total = useSelector((state) => state.user.total);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const changePage = (current) => {
-    setLoading(true)
-    dispatch(getUsers(current)).then(()=>{
-      setLoading(false)
-    })
+    setLoading(true);
+    dispatch(getUsers(current)).then(() => {
+      setLoading(false);
+    });
   };
   useEffect(() => {
-    setLoading(true)
-    dispatch(getUsers(1, PAGE_SIZE)).then(()=>{
-      setLoading(false)
-    })
-  }, []);
+    setLoading(true);
+    dispatch(getUsers(1, PAGE_SIZE)).then(() => {
+      setLoading(false);
+    });
+  }, [dispatch]);
   const columns = [
     {
       title: "姓名",
@@ -39,18 +39,21 @@ function UserList() {
       render: (record) => {
         return (
           <Space>
-            <Button onClick={() => navigate(`/editUser/${record.id}`)}>
+            <Button onClick={() => navigate(`/editUser/${record._id}`)}>
               修改
             </Button>
             <Button
               type="danger"
               onClick={() => {
-                dispatch(del(record.id));
+                dispatch(deleteUser(record._id));
               }}
             >
               删除
             </Button>
-            <Button type="link" onClick={() => navigate(`/users/${record._id}`)}>
+            <Button
+              type="link"
+              onClick={() => navigate(`/users/${record._id}`)}
+            >
               查看详情
             </Button>
           </Space>
@@ -59,13 +62,13 @@ function UserList() {
     },
   ];
   const paginationProps = {
-     showSizeChanger: true,
-     showQuickJumper: true,
+    showSizeChanger: true,
+    showQuickJumper: true,
     showTotal: () => `共${total}条`,
     pageSize: PAGE_SIZE,
     // current: current,
     total: total,
-    showSizeChanger: true,
+
     onChange: (current) => changePage(current),
   };
   return (
