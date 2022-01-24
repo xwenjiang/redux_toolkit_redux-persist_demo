@@ -4,6 +4,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 const { Title } = Typography;
+const formItemLayout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 8,
+  },
+};
 function EditUser() {
   const dispatch = useDispatch();
   const { userId } = useParams();
@@ -28,6 +36,7 @@ function EditUser() {
           avatar: user.avatar,
         }}
         onFinish={handleSaveUser}
+        {...formItemLayout}
       >
         <Form.Item name={"username"} label="用户名">
           <Input />

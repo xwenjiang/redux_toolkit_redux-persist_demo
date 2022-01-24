@@ -40,7 +40,18 @@ function UserList() {
       dataIndex: "avatar",
       key: "avatar",
       render: (text, record, index) => {
-        return <Image style={{ maxHeight: "40px" }} src={text}></Image>;
+        return (
+          <Image
+            style={{ maxHeight: "40px" }}
+            src={text}
+            placeholder={
+              <Image
+                preview={true}
+                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png?x-oss-process=image/blur,r_50,s_50/quality,q_1/resize,m_mfit,h_200,w_200"
+              />
+            }
+          ></Image>
+        );
       },
     },
     {

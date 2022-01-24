@@ -26,7 +26,7 @@ function AddUser() {
 
     dispatch(
       addUser({
-        avatar: avatar ? avatar : "https://picsum.photos/id/237/200/300",
+        avatar: avatar ? avatar : "https://picsum.photos/200/300.jpg",
         username,
         age,
       })
