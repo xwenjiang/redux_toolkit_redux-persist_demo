@@ -18,6 +18,12 @@ export const getUsers = createAsyncThunk("users/getusers", async (props) => {
   });
   return response.data;
 });
+export const addUser = createAsyncThunk("users/adduser", async (user) => {
+
+  const response = await ajax.post(`http://localhost:4000/users/adduser`, user);
+  
+  return response.data;
+});
 export const editUser = createAsyncThunk("users/edituser", async (user) => {
   const response = await ajax.post(
     `http://localhost:4000/users/edituser`,
@@ -30,7 +36,7 @@ export const deleteUser = createAsyncThunk("users/deleteuser", async (_id) => {
   const response = await ajax.post(`http://localhost:4000/users/deleteuser`, {
     _id,
   });
-  console.log(response.data);
+  
   return response.data;
 });
 
@@ -82,6 +88,11 @@ const userSilce = createSlice({
       const { _id } = action.payload.data;
 
       state.users = state.users.filter((item) => item._id !== _id);
+    });
+    builder.addCase(addUser.fulfilled, (state, action) => {
+      if (action.payload.stauts === "1") {
+        state.users.push(action.payload.data);
+      }
     });
   },
 });

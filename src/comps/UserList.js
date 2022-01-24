@@ -1,10 +1,11 @@
-import { Button, Space, Table } from "antd";
+import { Button, Space, Table, Image } from "antd";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteUser, getUsers } from "../store/slices/user-silce";
 import { PAGE_SIZE } from "../tools/constants";
+
 function UserList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,9 +31,17 @@ function UserList() {
       key: "username",
     },
     {
-      title: "密码",
-      dataIndex: "password",
-      key: "password",
+      title: "年龄",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "头像",
+      dataIndex: "avatar",
+      key: "avatar",
+      render: (text, record, index) => {
+        return <Image style={{ maxHeight: "40px" }} src={text}></Image>;
+      },
     },
     {
       title: "操作",
@@ -73,13 +82,6 @@ function UserList() {
   };
   return (
     <>
-      <Button
-        onClick={() => {
-          navigate("/adduser");
-        }}
-      >
-        添加新用户
-      </Button>
       <Table
         dataSource={users}
         columns={columns}
@@ -87,6 +89,15 @@ function UserList() {
         pagination={paginationProps}
         loading={loading}
       />
+      <Button
+        block
+        type="primary"
+        onClick={() => {
+          navigate("/adduser");
+        }}
+      >
+        添加新用户
+      </Button>
     </>
   );
 }
