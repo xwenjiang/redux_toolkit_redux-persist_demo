@@ -1,4 +1,4 @@
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Form, Input, message, Typography } from "antd";
 import { editUser } from "../store/slices/user-silce";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,10 @@ function EditUser() {
   );
   const handleSaveUser = (user) => {
     dispatch(editUser({ _id: userId, ...user })).then((res) => {
-      console.log("res:", res);
+      const { status } = res.payload;
+      if (status === "1") {
+        message.success("恭喜您修改成功");
+      }
     });
   };
   return (
@@ -29,7 +32,18 @@ function EditUser() {
         <Form.Item name={"username"} label="用户名">
           <Input />
         </Form.Item>
-        <Form.Item name={"age"} label="年龄">
+        <Form.Item name={"age"} label="年龄" rules={[
+            { required: true, message: "请输入年龄!" },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (parseInt(value) > 3 && parseInt(value) < 100) {
+                  return Promise.resolve();
+                }
+
+                return Promise.reject(new Error("年龄要大于三岁，小于100岁"));
+              },
+            }),
+          ]}>
           <Input />
         </Form.Item>
         <Form.Item name={"avatar"} label="头像">

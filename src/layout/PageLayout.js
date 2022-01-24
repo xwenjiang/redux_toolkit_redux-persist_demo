@@ -20,7 +20,7 @@ function PageLayout(props) {
           <SubMenu key="sub1" icon={<MailOutlined />} title="资源管理">
             <Menu.ItemGroup key="g1" title="用户管理">
               <Menu.Item key="1"><CustomLink to={'/'}>用户列表</CustomLink></Menu.Item>
-              <Menu.Item key="2">Option 2</Menu.Item>
+              <Menu.Item key="2"><CustomLink to={'/adduser'}>添加用户</CustomLink></Menu.Item>
             </Menu.ItemGroup>
             <Menu.ItemGroup key="g2" title="帖子管理">
               <Menu.Item key="3">Option 3</Menu.Item>

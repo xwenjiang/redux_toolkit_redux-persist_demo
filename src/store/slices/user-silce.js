@@ -29,7 +29,7 @@ export const editUser = createAsyncThunk("users/edituser", async (user) => {
     `http://localhost:4000/users/edituser`,
     user
   );
-  console.log(response.data);
+ 
   return response.data;
 });
 export const deleteUser = createAsyncThunk("users/deleteuser", async (_id) => {
@@ -77,7 +77,7 @@ const userSilce = createSlice({
       for (let index = 0; index < state.users.length; index++) {
         const element = state.users[index];
         if (element._id === data._id) {
-          console.log("find it !");
+         
           state.users[index].username = data.username;
           state.users[index].age = data.age;
           state.users[index].avatar = data.avatar;
