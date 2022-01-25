@@ -19,9 +19,8 @@ export const getUsers = createAsyncThunk("users/getusers", async (props) => {
   return response.data;
 });
 export const addUser = createAsyncThunk("users/adduser", async (user) => {
-
   const response = await ajax.post(`http://localhost:4000/users/adduser`, user);
-  
+
   return response.data;
 });
 export const editUser = createAsyncThunk("users/edituser", async (user) => {
@@ -29,14 +28,14 @@ export const editUser = createAsyncThunk("users/edituser", async (user) => {
     `http://localhost:4000/users/edituser`,
     user
   );
- 
+
   return response.data;
 });
 export const deleteUser = createAsyncThunk("users/deleteuser", async (_id) => {
   const response = await ajax.post(`http://localhost:4000/users/deleteuser`, {
     _id,
   });
-  
+
   return response.data;
 });
 
@@ -77,7 +76,6 @@ const userSilce = createSlice({
       for (let index = 0; index < state.users.length; index++) {
         const element = state.users[index];
         if (element._id === data._id) {
-         
           state.users[index].username = data.username;
           state.users[index].age = data.age;
           state.users[index].avatar = data.avatar;

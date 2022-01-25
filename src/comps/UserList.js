@@ -31,6 +31,11 @@ function UserList() {
       key: "username",
     },
     {
+      title: "密码",
+      dataIndex: "password",
+      key: "password",
+    },
+    {
       title: "年龄",
       dataIndex: "age",
       key: "age",
@@ -99,6 +104,8 @@ function UserList() {
         rowKey={(record) => record._id}
         pagination={paginationProps}
         loading={loading}
+        title={() => <h3 style={{ backgroud: "red" }}> 用户列表</h3>}
+        footer={() => "这是一个用户列表"}
       />
       <Button
         block
